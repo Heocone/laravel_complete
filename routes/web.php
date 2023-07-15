@@ -40,6 +40,7 @@ use App\Http\Livewire\User\Order\UserOrdersComponent;
 use App\Http\Livewire\User\Order\UserOrdersDetailsComponent;
 use App\Http\Livewire\User\UserEditProfileComponent;
 use App\Http\Livewire\User\UserProfileComponent;
+use App\Http\Livewire\User\UserReviewComponent;
 use App\Http\Livewire\VnpayComponent;
 
 /*
@@ -105,9 +106,12 @@ Route::middleware(['auth'])->group(function(){
         Route::prefix('order')->group(function () {
             Route::get('/',UserOrdersComponent::class)->name('user.orders');
             Route::get('/{order_id}',UserOrdersDetailsComponent::class)->name('user.orderdetail');
+            Route::get('/review/{order_item_id}/',UserReviewComponent::class)->name('user.review');
+
         });
         Route::get('/profile',UserProfileComponent::class)->name('user.profile');
         Route::get('/profile/edit',UserEditProfileComponent::class)->name('user.editprofile');
+        
     });
 });
 

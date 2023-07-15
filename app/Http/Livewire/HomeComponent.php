@@ -11,9 +11,13 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HomeComponent extends Component
 {
+    
+    public $satt=['Color'=>"white",
+                    'Size'=>"XL",];
+
     public function store($product_id, $product_name, $product_price)
     {
-        Cart::instance('cart')->add($product_id, $product_name,1, $product_price)->associate('\App\Models\Product');
+        Cart::instance('cart')->add($product_id, $product_name,1, $product_price,$this->satt)->associate('\App\Models\Product');
         $this->emitTo('cart-icon-component','refreshComponent');
         session()->flash('success_message','Them san pham vao gio hang thanh cong');
         // return redirect()->route('cart.index');
@@ -21,7 +25,7 @@ class HomeComponent extends Component
     public function addToWishList($product_id, $product_name, $product_price)
     {
         Cart::instance('wishlist')->add($product_id,$product_name,1,$product_price)->associate('App\Models\Product');
-        $this->emitTo('wishlist-icon-component','refreshComponentt');
+        $this->emitTo('wishlist-icon-component','refreshComponentt');  
     }
 
     public function removeFromWishlist($product_id){

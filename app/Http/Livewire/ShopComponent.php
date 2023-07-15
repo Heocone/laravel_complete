@@ -23,6 +23,8 @@ class ShopComponent extends Component
     public $color;
     public $product_id;
     public $qty;
+    public $satt=['Color'=>"white",
+                    'Size'=>"XL",];
     public function mount()
     {
         $this->qty = 1;
@@ -45,7 +47,7 @@ class ShopComponent extends Component
     }
     public function store($product_id, $product_name, $product_price)
     {
-        Cart::instance('cart')->add($product_id, $product_name,1,$product_price)->associate('\App\Models\Product');
+        Cart::instance('cart')->add($product_id, $product_name,1,$product_price,$this->satt)->associate('\App\Models\Product');
         $this->emitTo('cart-icon-component','refreshComponent');
         session()->flash('success_message','Them san pham vao gio hang thanh cong');
         // return redirect()->route('cart.index');

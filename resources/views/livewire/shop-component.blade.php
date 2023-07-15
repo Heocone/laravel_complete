@@ -30,13 +30,13 @@
                     <div class="col-lg-9">
                         <div class="shop-product-fillter">
                             <div class="totall-product">
-                                <p> We found <strong class="text-brand">{{ $products->total() }}</strong> items for you!</p>
+                                <p> Chúng tôi tìm thấy <strong class="text-brand">{{ $products->total() }}</strong> sản phẩm cho bạn!</p>
                             </div>
                             <div class="sort-by-product-area">
                                 <div class="sort-by-cover mr-10">
                                     <div class="sort-by-product-wrap">
                                         <div class="sort-by">
-                                            <span><i class="fi-rs-apps"></i>Show:</span>
+                                            <span><i class="fi-rs-apps"></i>Hiển thị:</span>
                                         </div>
                                         <div class="sort-by-dropdown-wrap">
                                             <span> {{ $pageSize }} <i class="fi-rs-angle-small-down"></i></span>
@@ -74,6 +74,12 @@
                                 </div>
                             </div>
                         </div>
+                        <style>
+                            .img1{
+                                height: 300.4px;
+                                width: 280.4px;
+                            }
+                        </style>
                         <div class="row product-grid-3">
                             @if (Session::has('success_message'))
                                 <div class="alert alert-success">
@@ -89,29 +95,38 @@
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
                                             <a href="{{ route('product.details',['slug'=>$product->slug]) }}">
-                                                <img class="default-img" src="{{ asset('assets/imgs/products')}}/{{ $product->image }}" alt="{{ $product->name }}">
-                                                <img class="hover-img" src="{{ asset('assets/imgs/products')}}/{{ $product->image2 }}" alt="{{ $product->name }}">
+                                                <img class="default-img img1" src="{{ asset('assets/imgs/products')}}/{{ $product->image }}" alt="{{ $product->name }}">
+                                                <img class="hover-img img1" src="{{ asset('assets/imgs/products')}}/{{ $product->image2 }}" alt="{{ $product->name }}">
                                             </a>
                                         </div>
                                         <div class="product-action-1">
-                                            <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $product->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id_product="{{ $product->id}}" >
-                                                <i class="fi-rs-search"></i></a>
-                                            </a>
+                                            {{-- <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $product->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id_product="{{ $product->id}}" wire:prevent.click="quickview({{ $product->id }})"><i class="fi-rs-search"></i></a> --}}
                                             {{--  onclick="deleteConfirmationn({{ $product->id }})" --}}
-                                            {{-- <a aria-label="Add To Wishlist" class="action-btn hover-up" href="wishlist.php"><i class="fi-rs-heart"></i></a> --}}
+                                            {{-- <a aria-label="Thêm vào yêu thích" class="action-btn hover-up" href="wishlist.php"><i class="fi-rs-heart"></i></a> --}}
                                             @if ($witems->contains($product->id))
                                                 <a aria-label="Remove From Wishlist" class="action-btn hover-up wishlisted" href="#" wire:click.prevent="removeFromWishlist({{ $product->id }})"><i class="fi-rs-heart"></i></a>
                                             @else
                                                 @if ($product->sale_price > 0)
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $product->id }},'{{ $product->name }}',{{ $product->sale_price }})"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $product->id }},'{{ $product->name }}',{{ $product->sale_price }})"><i class="fi-rs-heart"></i></a>
                                                 @else    
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $product->id }},'{{ $product->name }}',{{ $product->regular_price }})"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $product->id }},'{{ $product->name }}',{{ $product->regular_price }})"><i class="fi-rs-heart"></i></a>
                                                 @endif
                                             @endif
-                                            <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>
+                                            {{-- <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a> --}}
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
+                                            @if ($product->countsale > 100 )
+                                            <span class="best">Best sell</span>
+                                            @elseif ($product->sale_price)
+                                                @php
+                                                $chia = $product->sale_price / $product->regular_price;
+                                                $nhan = $chia * 100;
+                                                $phantram = 100 - $nhan;
+                                                @endphp
+                                                <span class="sale">Sale:{{ number_format($phantram) }}% </span>
+                                            @else
                                             <span class="hot">Hot</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="product-content-wrap">
@@ -127,19 +142,23 @@
                                         </div>
                                         <div class="product-price">
                                             @if ($product->sale_price > 10)
-                                                <span>${{ number_format($product->sale_price) }} </span>
-                                                <span class="old-price">${{ $product->regular_price }}</span>
+                                                <span>{{ number_format($product->sale_price) }} VNĐ</span>
+                                                <span class="old-price" style="font-size:13px">{{ number_format($product->regular_price) }} VNĐ</span>
                                             @else
-                                                <span>${{ number_format($product->regular_price) }} </span>
+                                                <span>{{ number_format($product->regular_price) }} VNĐ</span>
                                             @endif
                                         </div>
                                         @if ($product->sale_price > 10)
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $product->id}},'{{ $product->name }}',{{ $product->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $product->id}},'{{ $product->name }}',{{ $product->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
+                                            </div>
+                                        @elseif ($product->quantity <= 0)
+                                            <div class="product-action-1 show">
+                                                <a aria-label="Liên hệ shop" class="action-btn hover-up"><i class=" fi-rs-smartphone"></i></a>
                                             </div>
                                         @else
                                         <div class="product-action-1 show">
-                                            <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $product->id}},'{{ $product->name }}',{{ $product->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
+                                            <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $product->id}},'{{ $product->name }}',{{ $product->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
                                         </div>
                                         @endif
                                     </div>
@@ -163,7 +182,7 @@
                             <div class="col-lg-12 col-mg-6"></div>
                         </div>
                         <div class="widget-category mb-30">
-                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Danh mục</h5>
                             <ul class="categories">
                                 @foreach ($categories as $category)
                                 <li><a href="{{ route('product.category',['slug'=>$category->slug]) }}">{{ $category->name }}</a></li>
@@ -173,7 +192,7 @@
                         <!-- Fillter By Price -->
                         <div class="sidebar-widget price_range range mb-30">
                             <div class="widget-header position-relative mb-20 pb-10">
-                                <h5 class="widget-title mb-10">Fill by price</h5>
+                                <h5 class="widget-title mb-10">Tìm theo giá</h5>
                                 <div class="bt-1 border-color-1"></div>
                             </div>
                             <div class="price-filter">
@@ -183,19 +202,19 @@
                                         <div class="label-input">
                                             {{-- <input type="text" id="amount" name="price" placeholder="Add Your Price"> --}}
                                             <div >
-                                                <span>Range:</span>
-                                                <span class="text-info"><a style=" color:black">${{ $min_value }}</a></span> - <span class="text-info"><a style=" color:black">${{ $max_value }}</a></span>
+                                                <span>Phạm vi:</span>
+                                                <span class="text-info"><a style=" color:black">{{ $min_value }} VNĐ</a></span> - <span class="text-info"><a style=" color:black">{{ $max_value }} VNĐ</a></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="list-group">
+                            {{-- <div class="list-group">
                                 <div class="list-group-item mb-10 mt-10">
                                     <label class="fw-900">Color</label>
                                     <div class="custome-checkbox">
                                         <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="1" >
-                                        {{-- wire:click.prevent="changePageColor('green')" --}}
+                                        wire:click.prevent="changePageColor('green')"
                                         <label class="form-check-label" for="exampleCheckbox1"><span>Red (56)</span></label>
                                         <br>
                                         <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox2" value="">
@@ -217,7 +236,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="shop.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
+                            <a href="shop.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a> --}}
                         </div>
                         <!-- Product sidebar Widget -->
                         <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
@@ -231,14 +250,29 @@
                                     <img src="{{ asset('assets/imgs/products')}}/{{ $nproductsitem->image }}" alt="{{ $nproductsitem->name }}">
                                 </div>
                                 <div class="content pt-10">
-                                    <h5><a href="product-details.html">{{ $nproductsitem->name }}</a></h5>
+                                    <h5><a href="{{ route('product.details',['slug'=>$nproductsitem->slug]) }}">{{ $nproductsitem->name }}</a></h5>
                                     @if ($nproductsitem->sale_price > 0)
-                                        <p class="price mb-0 mt-5">${{ number_format($nproductsitem->sale_price) }}</p>
+                                        <p class="price mb-0 mt-5">{{ number_format($nproductsitem->sale_price) }} VNĐ</p>
                                     @else
-                                        <p class="price mb-0 mt-5">${{ number_format($nproductsitem->regular_price) }}</p>
+                                        <p class="price mb-0 mt-5">{{ number_format($nproductsitem->regular_price) }} VNĐ</p>
                                     @endif
                                     <div class="product-rate">
-                                        <div class="product-rating" style="width:90%"></div>
+                                        @php
+                                            $avgrating = 0;
+                                        @endphp
+                                        @foreach($nproductsitem->orderItems->where('rstatus',1) as $orderItem)
+                                            @php
+                                                $avgrating = ($avgrating + ($orderItem->review->rating));
+                                                $star = number_format($avgrating/$nproductsitem->orderItems->where('rstatus',1)->count(),1);
+                                            @endphp
+                                        @endforeach
+                                        @if ($nproductsitem->orderItems->where('rstatus',1)->count() > 0)
+                                            <div class="product-rating" style="width:{{ $star*20 }}%">
+                                        </div>
+                                        @else
+                                            <div class="product-rating" style="width:0%">
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -259,6 +293,8 @@
     </main>
 </div>
 
+  <!-- Quick View Modal -->
+
 
 @push('scripts')
     
@@ -271,6 +307,9 @@
         }
 
     </script> --}}
+
+    <!-- Load jQuery library -->
+
     <script>
         var sliderrange = $('#slider-range');
         var amountprice = $('#amount');
@@ -299,7 +338,7 @@
             // var nameProduct = $(this).parent().parent().find('.js-name-b2').val();
             var nameProduct = $(this).closest('.product_data').find('.product_name').val();
             $(this).on('click', function() {
-                swal(nameProduct, "đã được thêm vào danh sách sản phẩm yêu thích !", "success");
+                swal("Sản phẩm", "đã được thêm vào danh sách sản phẩm yêu thích !", "success");
                 $(this).addClass('js-addedwish-b2');
                 $(this).off('click');
             });
@@ -314,7 +353,7 @@
             // var nameProduct = $(this).parent().parent().find('.js-name-b2').val();
             var nameProduct = $(this).closest('.product_data').find('.product_name').val();
             $(this).on('click', function() {
-                swal(nameProduct, "đã được thêm vào gio hang !", "success");
+                swal("Sản phẩm", "đã được thêm vào giỏ hàng !", "success");
                 $(this).addClass('js-addedwish-b2');
                 $(this).off('click');
             });

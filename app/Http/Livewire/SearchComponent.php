@@ -14,11 +14,13 @@ class SearchComponent extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $pageSize = 12;
-    public $orderBy = "Default Sorting";
+    public $orderBy = "Mặc định";
     public $search_form;
     public $search_term;
     public $min_value = 0;
-    public $max_value = 1000;
+    public $max_value = 2000000;
+    public $satt=['Color'=>"white",
+                    'Size'=>"XL",];
 
     public function mount()
     {
@@ -45,7 +47,7 @@ class SearchComponent extends Component
 
     public function store($product_id, $product_name, $product_price)
     {
-        Cart::instance('cart')->add($product_id, $product_name,1, $product_price)->associate('\App\Models\Product');
+        Cart::instance('cart')->add($product_id, $product_name,1, $product_price, $this->satt)->associate('\App\Models\Product');
         $this->emitTo('cart-icon-component','refreshComponent');
         session()->flash('success_message','Them san pham vao gio hang thanh cong');
         // return redirect()->route('cart.index');

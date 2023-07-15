@@ -188,6 +188,7 @@ class AdminEditProductComponent extends Component
             }
         }
         session()->flash('message','Cập nhật sản phẩm thành công!');
+        return redirect()->route('admin.products');
     }
     public function add()
     {

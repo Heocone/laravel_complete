@@ -2,8 +2,8 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="/" rel="nofollow">Home</a>                    
-                <span></span> My Account
+                <a href="/" rel="nofollow">Trang chủ</a>                    
+                <span></span> Tài khoản của tôi
             </div>
         </div>
     </div>
@@ -19,23 +19,23 @@
                             <div class="dashboard-menu">
                                 <ul class="nav flex-column" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                        <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Thống kê dữ liệu</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Đơn hàng</a>
                                     </li>
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
+                                    </li> --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>Địa chỉ của tôi</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Thông tin tài khoản</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
-                                    </li>
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link" href="login.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -108,9 +108,9 @@
                                                           <div class="icon-stat">    
                                                             <div class="row">
                                                               <div class="col-xs-8 text-left">
-                                                                <span class="icon-stat-label">Tổng:</span>
+                                                                <span class="icon-stat-label">Tổng tiền:</span>
                                                                 <br>
-                                                                <span class="icon-stat-value"><h4>${{ $totalCost }}</h4></span>
+                                                                <span class="icon-stat-value"><h4>{{ number_format($totalCost) }}VNĐ</h4></span>
                                                               </div>   
                                                               {{-- <div class="col-xs-4 text-center">
                                                                 <i class="fi fi-rs-dollar icon-stat-visual bg-primary"></i>
@@ -203,7 +203,7 @@
                                                             @elseif($order->status == 'ordered')
                                                                 <a>Đang giao hàng</a>
                                                             @endif</td>
-                                                            <td>${{ $order->total }}</td>
+                                                            <td>{{ number_format($order->total) }} VNĐ</td>
                                                             <td><a href="{{ route('user.orderdetail',['order_id' => $order->id]) }}" class="btn-small d-block"><i class=" fa fi-rs-eye" style="position:relative;top:2px;"></i> View</a></td>
                                                         </tr>
                                                         @endforeach
@@ -227,7 +227,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                                {{-- <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
                                     <div class="card">
                                         <div class="card-header">
                                             <h5 class="mb-0">Orders tracking</h5>
@@ -251,19 +251,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="card mb-3 mb-lg-0">
                                                 <div class="card-header">
-                                                    <h5 class="mb-0">Billing Address</h5>
+                                                    <h5 class="mb-0">Địa chỉ giao hàng</h5>
                                                 </div>
                                                 <div class="card-body">
                                                     @if (Auth::check())
                                                         <address>{{ Auth::user()->line1 }}<br> 00 Business Spur,<br> Sault Ste. <br>Marie, MI 00000</address>
                                                         <p>New York</p>
-                                                        <a href="#" class="btn-small">Edit</a>
+                                                        {{-- <a href="#" class="btn-small">Edit</a> --}}
                                                     @endif
                                                 </div>
                                             </div>
@@ -277,7 +277,7 @@
                                                     <address>4299 Express Lane<br>
                                                         Sarasota, <br>FL 00000 USA <br>Phone: 1.000.000.0000</address>
                                                     <p>Sarasota</p>
-                                                    <a href="#" class="btn-small">Edit</a>
+                                                    {{-- <a href="#" class="btn-small">Edit</a> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -286,7 +286,7 @@
                                 <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Account Details</h5>
+                                            <h5>Thông tin tài khoản</h5>
                                         </div>
                                         <div class="card-body">
                                             {{-- <p>Already have an account? <a href="login.html">Log in instead!</a></p> --}}
@@ -294,7 +294,7 @@
                                                 <div class="row">
                                                     @if($user->profile->image)
                                                         <div class="form-group col-md-6">
-                                                            <label>Avatar <span class="required"></span></label>
+                                                            <label>Ảnh đại diện <span class="required"></span></label>
                                                             <img src="{{ asset('assets/imgs/profile') }}/{{ $user->profile->image }}" alt="">
                                                         </div>
                                                     @else
@@ -305,7 +305,7 @@
                                                         }
                                                     </style>
                                                         <div class="thumb form-group col-md-6">
-                                                            <label>Avatar <span class="required"></span></label>
+                                                            <label>Ảnh đại diện <span class="required"></span></label>
                                                             <img src="{{ asset('assets/imgs/page/avatar-7.jpg')}}" alt="">
                                                         </div>
                                                     @endif

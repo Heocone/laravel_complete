@@ -4,6 +4,19 @@
         .animated {
             font-family: 'Roboto', sans-serif !important;
         }
+        nav svg{
+            height: 20px;
+        }
+        nav .hidden{
+            display: block;
+        }
+        .wishlisted{
+            background-color: #f15412 !important;
+            border: 1px solid transparent !important;
+        }
+        .wishlisted i{
+            color: #fff !important;
+        }
     </style>
     <main class="main product_data">
         <section class="home-slider position-relative pt-50" wire:ignore>
@@ -110,22 +123,33 @@
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $fproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                {{-- <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $fproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" > --}}
                                                     <i class="fi-rs-search"></i></a>
                                                 </a>
                                                 @if ($witems->contains($fproduct->id))
                                                     <a aria-label="Remove From Wishlist" class="action-btn hover-up wishlisted" href="#" wire:click.prevent="removeFromWishlist({{ $fproduct->id }})"><i class="fi-rs-heart"></i></a>
                                                 @else
                                                     @if ($fproduct->sale_price > 0)
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $fproduct->id }},'{{ $fproduct->name }}',{{ $fproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $fproduct->id }},'{{ $fproduct->name }}',{{ $fproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
                                                     @else    
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $fproduct->id }},'{{ $fproduct->name }}',{{ $fproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $fproduct->id }},'{{ $fproduct->name }}',{{ $fproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
                                                     @endif
                                                 @endif
-                                                <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>
+                                                {{-- <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a> --}}
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="hot">Hot</span>
+                                                @if ($fproduct->countsale > 100 )
+                                                    <span class="best">Hot</span>
+                                                @elseif ($fproduct->sale_price)
+                                                    @php
+                                                    $chia = $fproduct->sale_price / $fproduct->regular_price;
+                                                    $nhan = $chia * 100;
+                                                    $phantram = 100 - $nhan;
+                                                    @endphp
+                                                    <span class="sale">Sale:{{ number_format($phantram) }}% </span>
+                                                @else
+                                                    <span class="new">New</span>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="product-content-wrap">
@@ -142,19 +166,19 @@
                                             </div>
                                             <div class="product-price">
                                                 @if ($fproduct->sale_price > 10)
-                                                    <span>${{ number_format($fproduct->sale_price) }} </span>
-                                                    <span class="old-price">${{ number_format($fproduct->regular_price) }}</span>
+                                                    <span>{{ number_format($fproduct->sale_price) }} VNĐ</span>
+                                                    <span class="old-price">{{ number_format($fproduct->regular_price) }} VNĐ</span>
                                                 @else
-                                                    <span>${{ number_format($fproduct->regular_price) }} </span>
+                                                    <span>{{ number_format($fproduct->regular_price) }} VNĐ</span>
                                                 @endif
                                             </div>
                                             @if ($fproduct->sale_price > 10)
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $fproduct->id}},'{{ $fproduct->name }}',{{ $fproduct->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $fproduct->id}},'{{ $fproduct->name }}',{{ $fproduct->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
                                             </div>
                                             @else
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $fproduct->id}},'{{ $fproduct->name }}',{{ $fproduct->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
+                                                <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $fproduct->id}},'{{ $fproduct->name }}',{{ $fproduct->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
                                             </div>
                                             @endif
                                         </div>
@@ -178,19 +202,19 @@
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $pproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                {{-- <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $pproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" > --}}
                                                     <i class="fi-rs-search"></i></a>
                                                 </a>
                                                 @if ($witems->contains($pproduct->id))
                                                     <a aria-label="Remove From Wishlist" class="action-btn hover-up wishlisted" href="#" wire:click.prevent="removeFromWishlist({{ $pproduct->id }})"><i class="fi-rs-heart"></i></a>
                                                 @else
                                                     @if ($pproduct->sale_price > 0)
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $pproduct->id }},'{{ $pproduct->name }}',{{ $pproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $pproduct->id }},'{{ $pproduct->name }}',{{ $pproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
                                                     @else    
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $pproduct->id }},'{{ $pproduct->name }}',{{ $pproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $pproduct->id }},'{{ $pproduct->name }}',{{ $pproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
                                                     @endif
                                                 @endif
-                                                <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>
+                                                {{-- <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a> --}}
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="best">Đã bán ({{ $pproduct->countsale }})</span>
@@ -208,19 +232,19 @@
                                             </div>
                                             <div class="product-price">
                                                 @if ($pproduct->sale_price > 10)
-                                                    <span>${{ number_format($pproduct->sale_price) }} </span>
-                                                    <span class="old-price">${{ number_format($pproduct->regular_price) }}</span>
+                                                    <span>{{ number_format($pproduct->sale_price) }} VNĐ</span>
+                                                    <span class="old-price">{{ number_format($pproduct->regular_price) }} VNĐ</span>
                                                 @else
-                                                    <span>${{ number_format($pproduct->regular_price) }} </span>
+                                                    <span>{{ number_format($pproduct->regular_price) }} VNĐ</span>
                                                 @endif
                                             </div>
                                             @if ($pproduct->sale_price > 10)
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $pproduct->id}},'{{ $pproduct->name }}',{{ $pproduct->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $pproduct->id}},'{{ $pproduct->name }}',{{ $pproduct->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
                                             </div>
                                         @else
                                         <div class="product-action-1 show">
-                                            <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $pproduct->id}},'{{ $pproduct->name }}',{{ $pproduct->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
+                                            <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $pproduct->id}},'{{ $pproduct->name }}',{{ $pproduct->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
                                         </div>
                                         @endif
                                         </div>
@@ -244,19 +268,19 @@
                                                 </a>
                                             </div>
                                             <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $nproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                {{-- <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $nproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"> --}}
                                                     <i class="fi-rs-search"></i></a>
                                                 </a>
                                                 @if ($witems->contains($nproduct->id))
                                                     <a aria-label="Remove From Wishlist" class="action-btn hover-up wishlisted" href="#" wire:click.prevent="removeFromWishlist({{ $nproduct->id }})"><i class="fi-rs-heart"></i></a>
                                                 @else
                                                     @if ($nproduct->sale_price > 0)
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $nproduct->id }},'{{ $nproduct->name }}',{{ $nproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $nproduct->id }},'{{ $nproduct->name }}',{{ $nproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
                                                     @else    
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $nproduct->id }},'{{ $nproduct->name }}',{{ $nproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $nproduct->id }},'{{ $nproduct->name }}',{{ $nproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
                                                     @endif
                                                 @endif
-                                                <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>
+                                                {{-- <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a> --}}
                                             </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 {{-- <span class="hot">Hot</span> --}}
@@ -273,26 +297,52 @@
                                                 <a href="/shop">{{ $nproduct->category->name }}</a>
                                             </div>
                                             <h2><a href="{{ route('product.details',['slug'=>$nproduct->slug]) }}">{{ $nproduct->name }}</a></h2>
-                                            <div class="rating-result" title="90%">
+                                            {{-- <div class="rating-result" title="90%">
                                                 <span>
                                                     <span>90%</span>
                                                 </span>
+                                            </div> --}}
+                                            <style>
+                                                .product-rate1{
+                                                    margin-left: 0px;
+                                                }
+                                                .hehe{
+                                                    margin-left: 80px;
+                                                    position: relative;
+                                                    bottom: 5px;
+                                                }
+                                            </style>
+                                            <div class="product-rate1">
+                                                @php
+                                                    $avgrating = 0;
+                                                @endphp
+                                                @foreach($nproduct->orderItems->where('rstatus',1) as $orderItem)
+                                                    @php
+                                                        $avgrating = ($avgrating + ($orderItem->review->rating));
+                                                        $star = number_format($avgrating/$nproduct->orderItems->where('rstatus',1)->count(),1);
+                                                    @endphp
+                                                @endforeach
+                                                @if ($nproduct->orderItems->where('rstatus',1)->count() > 0)
+                                                    <div class="product-rating" style="width:{{ $star*20 }}%"><span class="hehe">0%</span></div>
+                                                @else
+                                                    <div class="product-rating" style="width:0%"><span class="hehe">0%</span></div>
+                                                @endif
                                             </div>
                                             <div class="product-price">
                                                 @if ($nproduct->sale_price > 10)
-                                                    <span>${{ number_format($nproduct->sale_price) }} </span>
-                                                    <span class="old-price">${{ number_format($nproduct->regular_price) }}</span>
+                                                    <span>{{ number_format($nproduct->sale_price) }} VNĐ</span>
+                                                    <span class="old-price">{{ number_format($nproduct->regular_price) }} VNĐ</span>
                                                 @else
-                                                    <span>${{ number_format($nproduct->regular_price) }} </span>
+                                                    <span>{{ number_format($nproduct->regular_price) }} VNĐ</span>
                                                 @endif
                                             </div>
                                             @if ($nproduct->sale_price > 10)
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $nproduct->id}},'{{ $nproduct->name }}',{{ $nproduct->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $nproduct->id}},'{{ $nproduct->name }}',{{ $nproduct->sale_price }} )"><i class="fi-rs-shopping-bag-add"></i></a>
                                             </div>
                                         @else
                                         <div class="product-action-1 show">
-                                            <a aria-label="Add To Cart" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $nproduct->id}},'{{ $nproduct->name }}',{{ $nproduct->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
+                                            <a aria-label="Thêm vào giỏ hàng" class="action-btn hover-up js-addwish-b3" href="#" wire:click.prevent="store({{ $nproduct->id}},'{{ $nproduct->name }}',{{ $nproduct->regular_price }} )"><i class="fi-rs-shopping-bag-add"></i></a> 
                                         </div>
                                         @endif
                                         </div>
@@ -314,16 +364,16 @@
                 <div class="banner-img banner-big wow fadeIn animated f-none">
                     <img src="assets/imgs/banner/banner-4.png" alt="">
                     <div class="banner-text d-md-block d-none">
-                        <h4 class="mb-15 mt-40 text-brand">Repair Services</h4>
-                        <h1 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h1>
-                        <a href="/shop" class="btn">Learn More <i class="fi-rs-arrow-right"></i></a>
+                        <h4 class="mb-15 mt-40 text-brand">Dịch vụ sửa chữa</h4>
+                        <h1 class="fw-600 mb-20">Chúng tôi là một quả táo <br>Nhà cung cấp dịch vụ được ủy quyền</h1>
+                        <a href="/shop" class="btn">Tìm hiểu thêm <i class="fi-rs-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </section>
         <section class="popular-categories section-padding mt-15 mb-25" wire:ignore>
             <div class="container wow fadeIn animated">
-                <h3 class="section-title mb-20"><span>Popular</span> Categories</h3>
+                <h3 class="section-title mb-20"><span>Danh mục</span> phổ biến</h3>
                 <div class="carausel-6-columns-cover position-relative">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows"></div>
                     <div class="carausel-6-columns" id="carausel-6-columns">
@@ -346,9 +396,9 @@
                         <div class="banner-img wow fadeIn animated">
                             <img src="assets/imgs/banner/banner-1.png" alt="">
                             <div class="banner-text">
-                                <span>Smart Offer</span>
-                                <h4>Save 20% on <br>Woman Bag</h4>
-                                <a href="/shop">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                                <span>Ưu đãi tốt</span>
+                                <h4>Tích kiệm 20% cho <br>Túi sách nữ</h4>
+                                <a href="/shop">Mua ngay <i class="fi-rs-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -356,9 +406,9 @@
                         <div class="banner-img wow fadeIn animated">
                             <img src="assets/imgs/banner/banner-2.png" alt="">
                             <div class="banner-text">
-                                <span>Sale off</span>
-                                <h4>Great Summer <br>Collection</h4>
-                                <a href="/shop">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                                <span>Giảm</span>
+                                <h4>Bộ sưu tập <br>mùa hè</h4>
+                                <a href="/shop">Mua ngay <i class="fi-rs-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -366,9 +416,9 @@
                         <div class="banner-img wow fadeIn animated  mb-sm-0">
                             <img src="assets/imgs/banner/banner-3.png" alt="">
                             <div class="banner-text">
-                                <span>New Arrivals</span>
-                                <h4>Shop Today’s <br>Deals & Offers</h4>
-                                <a href="/shop">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                                <span>Điểm đến mới</span>
+                                <h4>Mua sắm với <br>ưu đãi ngay hôm nay</h4>
+                                <a href="/shop">Mua ngay <i class="fi-rs-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -391,19 +441,19 @@
                                     </a>
                                 </div>
                                 <div class="product-action-1">
-                                    <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $lproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    {{-- <a aria-label="Quick view" class="action-btn hover-up quick_view" id="{{ $lproduct->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"> --}}
                                         <i class="fi-rs-search"></i></a>
                                     </a>
                                     @if ($witems->contains($lproduct->id))
                                         <a aria-label="Remove From Wishlist" class="action-btn hover-up wishlisted" href="#" wire:click.prevent="removeFromWishlist({{ $lproduct->id }})"><i class="fi-rs-heart"></i></a>
                                     @else
                                         @if ($lproduct->sale_price > 0)
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $lproduct->id }},'{{ $lproduct->name }}',{{ $lproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
+                                            <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $lproduct->id }},'{{ $lproduct->name }}',{{ $lproduct->sale_price }})"><i class="fi-rs-heart"></i></a>
                                         @else    
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $lproduct->id }},'{{ $lproduct->name }}',{{ $lproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
+                                            <a aria-label="Thêm vào yêu thích" class="action-btn hover-up js-addwish-b2" href="#" wire:click.prevent="addToWishList({{ $lproduct->id }},'{{ $lproduct->name }}',{{ $lproduct->regular_price }})"><i class="fi-rs-heart"></i></a>
                                         @endif
                                     @endif
-                                    <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>
+                                    {{-- <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a> --}}
                                 </div>
                                 <div class="product-badges product-badges-position product-badges-mrg">
                                     @if ($lproduct->countsale > 100 )
@@ -423,16 +473,39 @@
                             </div>
                             <div class="product-content-wrap">
                                 <h2><a href="{{ route('product.details',['slug'=>$lproduct->slug]) }}">{{ $lproduct->name }}</a></h2>
-                                <div class="rating-result" title="90%">
+                                {{-- <div class="rating-result" title="90%">
                                     <span>
                                     </span>
+                                </div> --}}
+                                <style>
+                                    .product-rate {
+                                        margin-left: 60px;
+                                    }
+                                </style>
+                                <div class="product-rate">
+                                    @php
+                                        $avgrating = 0;
+                                    @endphp
+                                    @foreach($lproduct->orderItems->where('rstatus',1) as $orderItem)
+                                        @php
+                                            $avgrating = ($avgrating + ($orderItem->review->rating));
+                                            $star = number_format($avgrating/$lproduct->orderItems->where('rstatus',1)->count(),1);
+                                        @endphp
+                                    @endforeach
+                                    @if ($lproduct->orderItems->where('rstatus',1)->count() > 0)
+                                        <div class="product-rating" style="width:{{ $star*20 }}%">
+                                    </div>
+                                    @else
+                                        <div class="product-rating" style="width:0%">
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="product-price">
                                     @if ($lproduct->sale_price > 10)
-                                        <span>${{ number_format($lproduct->sale_price) }} </span>
-                                        <span class="old-price">${{ number_format($lproduct->regular_price) }}</span>
+                                        <span >{{ number_format($lproduct->sale_price) }} VNĐ</span>
+                                        <span class="old-price" style="font-size:10px">{{ number_format($lproduct->regular_price) }} VNĐ</span>
                                     @else
-                                        <span>${{ number_format($lproduct->regular_price) }} </span>
+                                        <span>{{ number_format($lproduct->regular_price) }} VNĐ</span>
                                     @endif
                                 </div>
                             </div>
@@ -446,7 +519,7 @@
        
         <section class="section-padding" wire:ignore>
             <div class="container">
-                <h3 class="section-title mb-20 wow fadeIn animated"><span>Featured</span> Brands</h3>
+                <h3 class="section-title mb-20 wow fadeIn animated"><span>Thương hiệu</span> nổi bật</h3>
                 <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-3-arrows"></div>
                     <div class="carausel-6-columns text-center" id="carausel-6-columns-3">

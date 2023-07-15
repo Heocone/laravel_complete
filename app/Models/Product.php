@@ -33,4 +33,9 @@ class Product extends Model
     {
         return $this->hasMany(AttributeValue::class,'');
     }
+
+    public function reivew()
+    {
+        return $this->hasMany(Review::class,'');
+    }
 }

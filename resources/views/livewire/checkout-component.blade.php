@@ -14,9 +14,12 @@
                 <div class="row">
                     <div class="col-lg-6 mb-sm-15">
                         <div class="toggle_info">
-                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
+                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Cảm ơn quý khách đã mua hàng của shop! </span> <a href="#" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Quý khách hàng có thể đánh giá sản phẩm sau khi nhận hàng tại phần lịch sử đơn hàng.</a> <i>Cảm ơn quý khách</i></i></span>
                         </div>
-                        <div class="panel-collapse collapse login_form" id="loginform">
+                        {{-- <div class="toggle_info">
+                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
+                        </div> --}}
+                        {{-- <div class="panel-collapse collapse login_form" id="loginform">
                             <div class="panel-body">
                                 <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
                                 <form method="post">
@@ -40,10 +43,13 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-lg-6">
                         <div class="toggle_info">
+                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Nếu bạn có mã giảm giá?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Đừng quên sử dụng tại giỏ hàng nhé!</a></span>
+                        </div>
+                        {{-- <div class="toggle_info">
                             <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
                         </div>
                         <div class="panel-collapse collapse coupon_form " id="coupon">
@@ -58,7 +64,7 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="row">
@@ -67,19 +73,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <form method="post" style="display: flex;" wire:submit.prevent="placeOrder">
+                    <form method="post" style="display: flex;" wire:submit.prevent="placeOrder" onsubmit="$('#processing').show();">
                         <div class="col-md-6">
                             <div class="mb-25">
-                                <h4>Billing Details</h4>
+                                <h4>Địa chỉ giao hàng</h4>
                             </div>
                                 <div class="form-group">
-                                    <input type="text" required="" name="fname" placeholder="First name *" wire:model="firtsname" {{ old('fname') }}>
+                                    <input type="text" required="" name="fname" placeholder="Nhập họ, tên đệm *" wire:model="firtsname" {{ old('fname') }}>
                                     @error('firtsname')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" required="" name="lname" placeholder="Last name *" wire:model="lastname">
+                                    <input type="text" required="" name="lname" placeholder="Nhập tên của bạn *" wire:model="lastname">
                                     @error('lastname')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -88,7 +94,7 @@
                                     <div class="custom_select">
                                         <select class="form-control select-active" wire:model="country">
                                             <option value="">Viet Nam</option>
-                                            <option value="AX">Aland Islands</option>
+                                            {{-- <option value="AX">Aland Islands</option>
                                             <option value="AF">Afghanistan</option>
                                             <option value="AL">Albania</option>
                                             <option value="DZ">Algeria</option>
@@ -324,14 +330,14 @@
                                             <option value="UZ">Uzbekistan</option>
                                             <option value="VU">Vanuatu</option>
                                             <option value="VA">Vatican</option>
-                                            <option value="VE">Venezuela</option>
+                                            <option value="VE">Venezuela</option> --}}
                                             <option value="VN">Vietnam</option>
-                                            <option value="WF">Wallis and Futuna</option>
+                                            {{-- <option value="WF">Wallis and Futuna</option>
                                             <option value="EH">Western Sahara</option>
                                             <option value="WS">Western Samoa</option>
                                             <option value="YE">Yemen</option>
                                             <option value="ZM">Zambia</option>
-                                            <option value="ZW">Zimbabwe</option>
+                                            <option value="ZW">Zimbabwe</option> --}}
                                         </select>
                                         @error('country')
 										<span class="text-danger">{{ $message }}</span>
@@ -339,48 +345,48 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="billing_address" required="" placeholder="Address *" wire:model="line1">
+                                    <input type="text" name="billing_address" required="" placeholder="Số nhà, tên đường, ... *" wire:model="line1">
                                     @error('line1')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="billing_address2" required="" placeholder="Address line2" wire:model="line2">
+                                    <input type="text" name="billing_address2" required="" placeholder="Xã, phường, thị trấn, ..." wire:model="line2">
                                     @error('line2')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text" name="city" placeholder="City / Town *" wire:model="city">
+                                    <input required="" type="text" name="city" placeholder="Quận / huyện *" wire:model="city">
                                     @error('city')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text" name="state" placeholder="State / County *" wire:model="province">
+                                    <input required="" type="text" name="state" placeholder="Tỉnh / thành phố *" wire:model="province">
                                     @error('province')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" wire:model="zipcode">
+                                    <input required="" type="text" name="zipcode" placeholder="Mã bưu điện *" wire:model="zipcode">
                                     @error('zipcode')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text" name="phone" placeholder="Phone *" wire:model="mobile">
+                                    <input required="" type="text" name="phone" placeholder="Số điện thoại *" wire:model="mobile">
                                     @error('mobile')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
                                 <div class="form-group">
-                                    <input required="" type="text" name="email" placeholder="Email address *" wire:model="email">
+                                    <input required="" type="text" name="email" placeholder="Địa chỉ email *" wire:model="email">
                                     @error('email')
 										<span class="text-danger">{{ $message }}</span>
 									@enderror
                                 </div>
-                                <div class="ship_detail">
+                                {{-- <div class="ship_detail">
                                     <div class="form-group">
                                         <div class="chek-form">
                                             <div class="custome-checkbox">
@@ -693,18 +699,18 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="mb-20">
-                                    <h5>Additional information</h5>
+                                    <h5>Ghi chú cho shop, shipper</h5>
                                 </div>
                                 <div class="form-group mb-30">
-                                    <textarea rows="5" placeholder="Order notes" wire:model="information"></textarea>
+                                    <textarea rows="5" placeholder="Nhập ghi chú" wire:model="information"></textarea>
                                 </div>
                         </div>
                         <div class="col-md-6">
                             <div class="order_review">
                                 <div class="mb-20">
-                                    <h4>Your Orders</h4>
+                                    <h4>Đơn hàng của bạn</h4>
                                 </div>
                                 <div class="table-responsive order_table text-center">
                                     @if (Session::has('checkout'))
@@ -712,8 +718,8 @@
                                             @if (Cart::instance('cart')->count() > 0)
                                                 <thead>
                                                     <tr>
-                                                        <th colspan="2">Product</th>
-                                                        <th>Total</th>
+                                                        <th colspan="2">Sản phẩm</th>
+                                                        <th>Tổng</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -723,28 +729,34 @@
                                                             <td>
                                                                 <h5><a href="{{ route('product.details',['slug'=>$item->model->slug]) }}">{{ $item->model->name }}</a></h5> <span class="product-qty">x {{ $item->qty }}</span>
                                                             </td>
-                                                            <td>{{ $item->subtotal }}</td>
+                                                            <td>{{ number_format($item->subtotal) }}</td>
                                                         </tr>
                                                     @endforeach
+                                                    @php
+                                                        $discount = Session::get('checkout')['discount'];
+                                                        $subtotal = Session::get('checkout')['subtotal'];
+                                                        $tax = Session::get('checkout')['tax'];
+                                                        $total = Session::get('checkout')['total'];
+                                                    @endphp
                                                     <tr>
-                                                        <th>Discount</th>
-                                                        <td class="product-subtotal" colspan="2">${{ Session::get('checkout')['discount'] }}</td>
+                                                        <th>Giá giảm</th>
+                                                        <td class="product-subtotal" colspan="2">{{ number_format($discount) }} VNĐ</td>
                                                     </tr>
                                                     <tr>
-                                                        <th>SubTotal</th>
-                                                        <td class="product-subtotal" colspan="2">${{ Session::get('checkout')['subtotal'] }}</td>
+                                                        <th>Tổng phụ</th>
+                                                        <td class="product-subtotal" colspan="2">{{ number_format($subtotal) }} VNĐ</td>
                                                     </tr>
                                                     <tr>
-                                                        <th>Tax</th>
-                                                        <td class="product-subtotal" colspan="2">${{ Session::get('checkout')['tax'] }}</td>
+                                                        <th>Thuế</th>
+                                                        <td class="product-subtotal" colspan="2">{{ number_format($tax) }} VNĐ</td>
                                                     </tr>
                                                     <tr>
-                                                        <th>Shipping</th>
-                                                        <td colspan="2"><em>Free Shipping</em></td>
+                                                        <th>Vận chuyển</th>
+                                                        <td colspan="2"><em>Free Ship</em></td>
                                                     </tr>
                                                     <tr>
-                                                        <th>Total</th>
-                                                        <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">${{ Session::get('checkout')['total'] }}</span></td>
+                                                        <th>Tổng</th>
+                                                        <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">{{ number_format($total) }} VNĐ</span></td>
                                                     </tr>
                                                 </tbody>
                                             @endif
@@ -754,30 +766,42 @@
                                 <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                 <div class="payment_method">
                                     <div class="mb-25">
-                                        <h5>Payment</h5>
+                                        <h5>Phương thức thanh toán</h5>
                                     </div>
                                     <div class="payment_option">
                                         <div class="custome-radio">
                                             <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" value="cod" wire:model="payment_mod">
                                             <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#cashOnDelivery" aria-controls="cashOnDelivery">Thanh toán khi giao hàng</label>                                       
                                         </div>
+                                        @error('payment_mod')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                         <div class="custome-radio">
                                             <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" value="vnpay" wire:model="payment_mod">
-                                            <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#cardPayment" aria-controls="cardPayment">VNPAY</label>      
-                                                                             
+                                            <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#cardPayment" aria-controls="cardPayment">VNPAY</label>                                   
                                         </div>
-                                        <div class="custome-radio">
+                                        @error('payment_mod')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                        {{-- <div class="custome-radio">
                                             <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" value="PAYPAL" wire:model="payment_mod">
-                                            <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>         
-                                                                          
-                                        </div>
+                                            <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>                                    
+                                        </div> --}}
+                                        
                                     </div>
-                                    @error('payment_mod')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    
                                 </div>
                                 {{-- <a href="#" class="btn btn-fill-out btn-block mt-30">Place Order</a> --}}
-                                <button href="#" type="submit" class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                                @if ($errors->isEmpty())
+                                {{-- <div wire:ignore id="processing" style="font-size:22px; margin-bottom:20px; padding-left:37px; color:green; display:none">
+                                    <i class=" fi fi-rs-spinner fi-rs-pulse fi-rs-forward"></i>
+                                    <span>Đang xử lý...</span>
+                                </div> --}}
+                                <div class="spinner-border text-warning" id="processing" role="status" wire:ignore style="font-size:22px; margin-bottom:20px; padding-left:37px; display:none">
+                                    <span>Đang xử lý...</span>
+                                  </div>
+                                @endif
+                                <button href="#" type="submit" class="btn btn-fill-out btn-block mt-30">Thanh toán</button>
                             </div>
                         </div>
                     </form>    

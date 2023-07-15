@@ -56,7 +56,7 @@
                                             {{-- <td>${{ $order->subtotal }}</td>
                                             <td>${{ $order->discount }}</td>
                                             <td>${{ $order->tax }}</td> --}}
-                                            <td>${{ $order->total }}</td>
+                                            <td>{{ number_format($order->total) }} VNĐ</td>
                                             <td>{{ $order->firtsname }}</td>
                                             <td>{{ $order->lastname }}</td>
                                             <td>{{ $order->mobile }}</td>

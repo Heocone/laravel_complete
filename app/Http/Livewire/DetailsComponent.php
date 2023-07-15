@@ -23,6 +23,10 @@ class DetailsComponent extends Component
     }
     public function store($product_id, $product_name, $product_price)
     {
+        if (!$this->satt) {
+            $this->satt=['Color'=>"none",
+                    'Size'=>"none",];
+        }
         Cart::instance('cart')->add($product_id, $product_name,$this->qty, $product_price,$this->satt)->associate('\App\Models\Product');
         session()->flash('success_message','Them san pham vao gio hang thanh cong');
         return redirect()->route('cart.index');
@@ -46,6 +50,7 @@ class DetailsComponent extends Component
         $product = Product::where('slug',$this->slug)->first();
         $rproducts = Product::where('category_id',$product->category_id)->inRandomOrder()->limit(4)->get();
         $nproducts = Product::latest()->take(4)->get();
+        
         if(Auth::check())
         {
             Cart::instance('cart')->store(Auth::user()->email);

@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <!-- End Gallery -->
-                                <div class="social-icons single-share">
+                                {{-- <div class="social-icons single-share">
                                     <ul class="text-grey-5 d-inline-block">
                                         <li><strong class="mr-10">Chia sẻ:</strong></li>
                                         <li class="social-facebook"><a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-facebook.svg')}}" alt=""></a></li>
@@ -63,7 +63,7 @@
                                         <li class="social-instagram"><a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-instagram.svg')}}" alt=""></a></li>
                                         <li class="social-linkedin"><a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-pinterest.svg')}}" alt=""></a></li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12">
                                 <div class="detail-info">
@@ -74,17 +74,31 @@
                                         </div>
                                         <div class="product-rate-cover text-end">
                                             <div class="product-rate d-inline-block">
-                                                <div class="product-rating" style="width:90%">
+                                                @php
+                                                    $avgrating = 0;
+                                                @endphp
+                                                @foreach($product->orderItems->where('rstatus',1) as $orderItem)
+                                                    @php
+                                                        $avgrating = ($avgrating + ($orderItem->review->rating));
+                                                        $star = number_format($avgrating/$product->orderItems->where('rstatus',1)->count(),1);
+                                                    @endphp
+                                                @endforeach
+                                                @if ($product->orderItems->where('rstatus',1)->count() > 0)
+                                                    <div class="product-rating" style="width:{{ $star*20 }}%">
                                                 </div>
+                                                @else
+                                                    <div class="product-rating" style="width:0%">
+                                                </div>
+                                                @endif
                                             </div>
-                                            <span class="font-small ml-5 text-muted"> (25 đánh giá)</span>
+                                            <span class="font-small ml-5 text-muted"> ({{ $product->orderItems->where('rstatus',1)->count() }} đánh giá)</span>
                                         </div>
                                     </div>
                                     <div class="clearfix product-price-cover">
                                         @if ($product->sale_price > 0)
                                         <div class="product-price primary-color float-left">
-                                            <ins><span class="text-brand">${{ number_format($product->sale_price) }}</span></ins>
-                                            <ins><span class="old-price font-md ml-15">${{ number_format($product->regular_price) }}</span></ins>
+                                            <ins><span class="text-brand">{{ number_format($product->sale_price) }} VNĐ</span></ins>
+                                            <ins><span class="old-price font-md ml-15">{{ number_format($product->regular_price) }} VNĐ</span></ins>
                                             @php
                                                 $chia = $product->sale_price / $product->regular_price;
                                                 $nhan = $chia * 100;
@@ -94,7 +108,7 @@
                                         </div>
                                         @else
                                         <div class="product-price primary-color float-left">
-                                            <ins><span class="text-brand">${{ number_format($product->regular_price) }}</span></ins>
+                                            <ins><span class="text-brand">{{ number_format($product->regular_price) }} VNĐ</span></ins>
                                             {{-- <ins><span class="old-price font-md ml-15">$200.00</span></ins>
                                             <span class="save-price  font-md color3 ml-15">25% Off</span> --}}
                                         </div>
@@ -178,15 +192,14 @@
                                                 @else
                                                 <button type="button" class="button button-add-to-cart" wire:click.prevent="store({{ $product->id}},'{{ $product->name }}',{{ $product->regular_price }} )">Thêm vào giỏ hàng</button>
                                                 @endif
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="wishlist.php"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>
+                                                <a aria-label="Thêm vào yêu thích" class="action-btn hover-up" href="wishlist.php"><i class="fi-rs-heart"></i></a>
+                                                {{-- <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a> --}}
                                             @else
-                                                
                                                 {{-- <h5>Xin lỗi quý khách sản phẩm này đã hết hàng</h5>
                                                 <h6>Quý khách vui lòng liên hệ với shop để đặt hàng trực tiếp</h6>
                                                 <h6>Xin quý khách thông cảm</h6> --}}
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="wishlist.php"><i class="fi-rs-heart"></i></a>
-                                            <a aria-label="Compare" class="action-btn hover-up" href="compare.php"><i class="fi-rs-shuffle"></i></a>    
+                                                <a aria-label="Thêm vào yêu thích" class="action-btn hover-up" href="#"><i class="fi-rs-heart"></i></a>
+                                                {{-- <a aria-label="Compare" class="action-btn hover-up" href="#"><i class="fi-rs-shuffle"></i></a>     --}}
                                                 <p class="font-xs">Sản phẩm này đã bán hết Quý khách<br>  vui lòng liên hệ với shop để đặt hàng trực tiếp.
                                                 </p>
                                             @endif
@@ -195,7 +208,7 @@
                                     </div>
                                     <ul class="product-meta font-xs color-grey mt-50">
                                         <li class="mb-5">Mã vạch: <a>{{ $product->SKU }}</a></li>
-                                        <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
+                                        {{-- <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li> --}}
                                         <li>Số lượng:<span class="in-stock text-success ml-5">{{ $product->quantity }} sản phẩm</span></li>
                                     </ul>
                                 </div>
@@ -212,7 +225,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Dánh giá (3)</a>
+                                    <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Dánh giá ({{  $product->orderItems->where('rstatus',1)->count() }})</a>
                                 </li>
                             </ul>
                             <div class="tab-content shop_info_tab entry-main-content">
@@ -340,32 +353,34 @@
                                     <div class="comments-area">
                                         <div class="row">
                                             <div class="col-lg-8">
-                                                <h4 class="mb-30">Câu hỏi và câu trả lời của khách hàng</h4>
+                                                <h4 class="mb-30">Đánh giá của khách hàng</h4>
                                                 <div class="comment-list">
+                                                    @foreach($product->orderItems->where('rstatus',1) as $orderItem)
                                                     <div class="single-comment justify-content-between d-flex">
                                                         <div class="user justify-content-between d-flex">
                                                             <div class="thumb text-center">
-                                                                <img src="{{ asset('assets/imgs/page/avatar-6.jpg')}}" alt="">
-                                                                <h6><a href="#">Jacky Chan</a></h6>
-                                                                <p class="font-xxs">Since 2012</p>
+                                                                <img src="{{ asset('assets/imgs/profile')}}/{{ $orderItem->order->user->profile->image }}" alt="{{ $orderItem->order->user->name }}">
+                                                                <h6><a href="#">{{ $orderItem->order->user->name }}</a></h6>
+                                                                <p class="font-xxs">Since {{ Carbon\Carbon::parse($orderItem->order->user->created_at)->format('Y') }}</p>
                                                             </div>
                                                             <div class="desc">
                                                                 <div class="product-rate d-inline-block">
-                                                                    <div class="product-rating" style="width:90%">
+                                                                    <div class="product-rating" style="width:{{ $orderItem->review->rating * 20 }}%">
                                                                     </div>
                                                                 </div>
-                                                                <p>Thank you very fast shipping from Poland only 3days.</p>
+                                                                <p>{{ $orderItem->review->comment }}</p>
                                                                 <div class="d-flex justify-content-between">
                                                                     <div class="d-flex align-items-center">
-                                                                        <p class="font-xs mr-30">December 4, 2020 at 3:12 pm </p>
+                                                                        <p class="font-xs mr-30">{{ Carbon\Carbon::parse($orderItem->review->created_at)->format('d F Y g:i A') }}</p>
                                                                         <a href="#" class="text-brand btn-reply">Reply <i class="fi-rs-arrow-right"></i> </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @endforeach
                                                     <!--single-comment -->
-                                                    <div class="single-comment justify-content-between d-flex">
+                                                    {{-- <div class="single-comment justify-content-between d-flex">
                                                         <div class="user justify-content-between d-flex">
                                                             <div class="thumb text-center">
                                                                 <img src="{{ asset('assets/imgs/page/avatar-7.jpg')}}" alt="">
@@ -409,45 +424,86 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     <!--single-comment -->
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
-                                                <h4 class="mb-30">Đánh giá của khách hàng</h4>
-                                                <div class="d-flex mb-30">
-                                                    <div class="product-rate d-inline-block mr-15">
-                                                        <div class="product-rating" style="width:90%">
-                                                        </div>
+                                                    <h4 class="mb-30">Đánh giá của khách hàng</h4>
+                                                    <div class="d-flex mb-30">
+                                                        @if ($product->orderItems->where('rstatus',1)->count() > 0)
+                                                            <div class="product-rate d-inline-block mr-15">
+                                                                <div class="product-rating" style="width:{{ $star*20 }}%">
+                                                                </div>
+                                                            </div>
+                                                            <h6>{{ $star }} out of 5</h6>
+                                                        @else
+                                                            <div class="product-rate d-inline-block mr-15">
+                                                                <div class="product-rating" style="width:0%">
+                                                                </div>
+                                                            </div>
+                                                            <h6>0 out of 5</h6>
+                                                        @endif
+                                                        
                                                     </div>
-                                                    <h6>4.8 out of 5</h6>
-                                                </div>
-                                                <div class="progress">
-                                                    <span>5 star</span>
-                                                    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-                                                </div>
-                                                <div class="progress">
-                                                    <span>4 star</span>
-                                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                                </div>
-                                                <div class="progress">
-                                                    <span>3 star</span>
-                                                    <div class="progress-bar" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
-                                                </div>
-                                                <div class="progress">
-                                                    <span>2 star</span>
-                                                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
-                                                </div>
-                                                <div class="progress mb-30">
-                                                    <span>1 star</span>
-                                                    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
-                                                </div>
-                                                <a href="#" class="font-xs text-muted">?</a>
+                                                    @foreach($product->orderItems->where('rstatus',1) as $orderItem)
+                                                    @php
+                                                        $tong5 = number_format(($orderItem->review->where('rating',5)->count() / ($product->orderItems->where('rstatus',1)->count()))*100);
+                                                        $tong4 = ((number_format((($orderItem->review->where('rating',4)->count()) / ($product->orderItems->where('rstatus',1)->count()))*100)));
+                                                        $tong3 = number_format(($orderItem->review->where('rating',3)->count() / ($product->orderItems->where('rstatus',1)->count()))*100);
+                                                        $tong2 = number_format(($orderItem->review->where('rating',2)->count() / ($product->orderItems->where('rstatus',1)->count()))*100);
+                                                        $tong1 = number_format(($orderItem->review->where('rating',1)->count() / ($product->orderItems->where('rstatus',1)->count()))*100);
+                                                    @endphp
+                                                    @endforeach
+                                                    @if ($product->orderItems->where('rstatus',1)->count() > 0)
+                                                    <div class="progress">
+                                                        <span>5 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $tong5 }}%;" aria-valuenow="{{ $tong5 }}" aria-valuemin="0" aria-valuemax="100">{{ $tong5 }}%</div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>4 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $tong4 }}%;" aria-valuenow="{{ $tong4 }}" aria-valuemin="0" aria-valuemax="100">{{ $tong4 }}%</div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>3 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $tong3 }}%;" aria-valuenow="{{ $tong3 }}" aria-valuemin="0" aria-valuemax="100">{{ $tong3 }}%</div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>2 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $tong2 }}%;" aria-valuenow="{{ $tong2 }}" aria-valuemin="0" aria-valuemax="100">{{ $tong2 }}%</div>
+                                                    </div>
+                                                    <div class="progress mb-30">
+                                                        <span>1 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $tong1 }}%;" aria-valuenow="{{ $tong1 }}" aria-valuemin="0" aria-valuemax="100">{{ $tong1 }}%</div>
+                                                    </div>
+                                                    @else
+                                                    <div class="progress">
+                                                        <span>5 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>4 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>3 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <span>2 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                    </div>
+                                                    <div class="progress mb-30">
+                                                        <span>1 star</span>
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                    </div>
+                                                    @endif
+                                                    {{-- <a href="#" class="font-xs text-muted">?</a> --}}
                                             </div>
                                         </div>
                                     </div>
                                     <!--comment form-->
-                                    <div class="comment-form">
+                                    {{-- <div class="comment-form">
                                         <h4 class="mb-15">Add a review</h4>
                                         <div class="product-rate d-inline-block mb-30">
                                         </div>
@@ -483,7 +539,7 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -504,9 +560,9 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
-                                                    <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="wishlist.php" tabindex="0"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn small hover-up" href="compare.php" tabindex="0"><i class="fi-rs-shuffle"></i></a>
+                                                    {{-- <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-search"></i></a> --}}
+                                                    <a aria-label="Thêm vào yêu thích" class="action-btn small hover-up" href="wishlist.php" tabindex="0"><i class="fi-rs-heart"></i></a>
+                                                    {{-- <a aria-label="Compare" class="action-btn small hover-up" href="compare.php" tabindex="0"><i class="fi-rs-shuffle"></i></a> --}}
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">Hot</span>
@@ -520,10 +576,10 @@
                                                 </div>
                                                 <div class="product-price">
                                                     @if ($rproductitem->sale_price > 0)
-                                                        <span>${{ number_format($rproductitem->sale_price) }}</span> </span>
-                                                        <span class="old-price">${{ $rproductitem->regular_price }}</span>
+                                                        <span>{{ number_format($rproductitem->sale_price) }} VNĐ</span> </span>
+                                                        <span class="old-price"  style=" font-size:11px">{{ number_format($rproductitem->regular_price) }} VNĐ</span>
                                                     @else
-                                                    <span>${{ number_format($rproductitem->regular_price) }}</span> </span>
+                                                    <span>{{ number_format($rproductitem->regular_price) }} VNĐ</span> </span>
                                                     @endif
                                                     
                                                 </div>
@@ -566,12 +622,27 @@
                             <div class="content pt-10">
                                 <h5><a href="{{ route('product.details',['slug'=>$nproductitem->slug]) }}">{{ $nproductitem->name }}</a></h5>
                                 @if ($nproductitem->sale_price > 0)
-                                    <p class="price mb-0 mt-5">${{ number_format($nproductitem->sale_price) }}</p>
+                                    <p class="price mb-0 mt-5">{{ number_format($nproductitem->sale_price) }} VNĐ</p>
                                 @else
-                                    <p class="price mb-0 mt-5">${{ number_format($nproductitem->regular_price) }}</p>
+                                    <p class="price mb-0 mt-5">{{ number_format($nproductitem->regular_price) }} VNĐ</p>
                                 @endif
                                 <div class="product-rate">
-                                    <div class="product-rating" style="width:90%"></div>
+                                    @php
+                                        $avgrating = 0;
+                                    @endphp
+                                    @foreach($nproductitem->orderItems->where('rstatus',1) as $orderItem)
+                                        @php
+                                            $avgrating = ($avgrating + ($orderItem->review->rating));
+                                            $star = number_format($avgrating/$nproductitem->orderItems->where('rstatus',1)->count(),1);
+                                        @endphp
+                                    @endforeach
+                                    @if ($nproductitem->orderItems->where('rstatus',1)->count() > 0)
+                                        <div class="product-rating" style="width:{{ $star*20 }}%">
+                                    </div>
+                                    @else
+                                        <div class="product-rating" style="width:0%">
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

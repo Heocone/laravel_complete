@@ -57,20 +57,17 @@
                                                 </div>
                                             @endforeach --}}
                                             @foreach ($item->options as $key => $value)
-
                                             @if ($key == 'Color')
                                             <td>{{ $value }}</td>
                                             @endif
-
                                             @if ($key == 'Size')
                                             <td>{{ $value }}</td>
                                             @endif
-
                                             @endforeach
                                             @if ($item->model->sale_price)
-                                            <td class="price" data-title="Price"><span>${{ number_format($item->model->sale_price) }} </span></td> 
+                                            <td class="price" data-title="Price"><span>{{ number_format($item->model->sale_price) }} VNĐ</span></td> 
                                             @else
-                                            <td class="price" data-title="Price"><span>${{ number_format($item->model->regular_price) }} </span></td>
+                                            <td class="price" data-title="Price"><span>{{ number_format($item->model->regular_price) }} VNĐ</span></td>
                                             @endif
                                             
                                             <td class="text-center" data-title="Stock">
@@ -81,14 +78,14 @@
                                                 </div>
                                             </td>
                                             <td class="text-right" data-title="Cart">
-                                                <span>${{ $item->subtotal }} </span>
+                                                <span>{{ number_format($item->subtotal) }} VNĐ</span>
                                             </td>
                                             <td class="action" data-title="Remove"><a href="#" class="text-muted" onclick="return confirm('Bạn muốn xóa sản phẩm này?')|| event.stopImmediatePropagation()" wire:click.prevent="destroyitem('{{ $item->rowId }}')"><i class="fi-rs-trash"></i></a></td>
                                         </tr>
                                         @endforeach
                                         <tr>
                                             <td colspan="6" class="text-end">
-                                                <a href="#" class="text-muted" onclick="return confirm('Bạn có muốn xóa toàn bộ sản phẩm khỏi giỏ hàng?')|| event.stopImmediatePropagation()" wire:click.prevent="deleteAll()"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
+                                                <a href="#" class="text-muted" onclick="return confirm('Bạn có muốn xóa toàn bộ sản phẩm khỏi giỏ hàng?')|| event.stopImmediatePropagation()" wire:click.prevent="deleteAll()"> <i class="fi-rs-cross-small"></i> Xóa toàn bộ giỏ hàng</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -390,20 +387,20 @@
                                                             $subtotal = Cart::instance('cart')->subtotal();
                                                         @endphp
                                                         <td class="cart_total_label">Tổng phụ</td>
-                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">${{ number_format($subtotal) }}</span></td>
+                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($subtotal) }} VNĐ</span></td>
                                                     </tr>
                                                     @if (Session::has('coupon'))
                                                         <tr>
                                                             <td class="cart_total_label">Chiết khấu ({{ Session::get('coupon')['code'] }})<a aria-label="Xóa mã giảm giá" class="action-btn hover-up" href="#" wire:click.prevent="removeCoupon"> <i class="fi fi-rs-delete text-danger" style=" padding-top:2px"></i></a></td>
-                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">${{ number_format($discount) }}</span></td>
+                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($discount) }} VNĐ</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="cart_total_label">Tổng phụ có chiết khấu</td>
-                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">${{ number_format($subtotalAfterDiscount) }}</span></td>
+                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($subtotalAfterDiscount) }} VNĐ</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="cart_total_label">Thuế</td>
-                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ config('cart.tax') }}% - $ {{ number_format($taxAfterDiscount) }}</span></td>
+                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ config('cart.tax') }}% - {{ number_format($taxAfterDiscount) }} VNĐ</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="cart_total_label">Phí vận chuyển</td>
@@ -411,7 +408,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="cart_total_label">Tổng tiền</td>
-                                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">$ {{ number_format($totalAfterDiscount) }}</span></strong></td>
+                                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">{{ number_format($totalAfterDiscount) }} VNĐ</span></strong></td>
                                                         </tr>
                                                     @else
                                                         <tr>
@@ -419,7 +416,7 @@
                                                                 $tax = Cart::instance('cart')->tax();
                                                             @endphp
                                                             <td class="cart_total_label">Thuế</td>
-                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">${{ number_format($tax) }}</span></td>
+                                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($tax) }} VNĐ</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="cart_total_label">Phí vận chuyển</td>
@@ -430,13 +427,13 @@
                                                         @endphp
                                                         <tr>
                                                             <td class="cart_total_label">Tổng tiền</td>
-                                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">${{ number_format($total) }}</span></strong></td>
+                                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">{{ number_format($total) }} VNĐ</span></strong></td>
                                                         </tr>
                                                     @endif
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <a href="#" class="btn " wire:click.prevent="checkout"> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                                        <a href="#" class="btn " wire:click.prevent="checkout"> <i class="fi-rs-box-alt mr-10"></i> Thanh toán</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-12">
@@ -454,7 +451,7 @@
                                                         <form action="#" target="_blank" wire:submit.prevent="applyCouponCode">
                                                             <div class="form-row row justify-content-center">
                                                                 <div class="form-group col-lg-6">
-                                                                    <input class="font-medium" type="text" name="Coupon" placeholder="Enter Your Coupon" wire:model="couponCode">
+                                                                    <input class="font-medium" type="text" name="Coupon" placeholder="Nhập mã của bạn" wire:model="couponCode">
                                                                 </div>
                                                                 <div class="form-group col-lg-6">
                                                                     <button class="btn  btn-sm"><i class="fi-rs-label mr-10"></i>Áp dụng</button>

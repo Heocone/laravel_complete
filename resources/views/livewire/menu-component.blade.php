@@ -13,9 +13,10 @@
                         <li class="mega-menu-col col-lg-7">
                             <ul class="d-lg-flex">
                                 @foreach ($categoryitem->subCategories as $scategory)
+                                    @if (!$scategory->popular == 1)
                                     <li class="mega-menu-col col-lg-6">
                                         <ul>
-                                            <li><span class="submenu-title">Hot & Trending</span></li>
+                                            <li><span class="submenu-title">Mới và phổ biến</span></li>
                                             <li><a class="dropdown-item nav-link nav_item" href="{{ route('product.category',['slug'=>$categoryitem->slug,'scategory_slug'=>$scategory->slug]) }}">{{ $scategory->name }}</a></li>
                                             {{-- <li><a class="dropdown-item nav-link nav_item" href="#">Blouses & Shirts</a></li>
                                             <li><a class="dropdown-item nav-link nav_item" href="#">Hoodies & Sweatshirts</a></li>
@@ -26,10 +27,10 @@
                                             <li><a class="dropdown-item nav-link nav_item" href="#">Coats & Jackets</a></li> --}}
                                         </ul>
                                     </li>    
-                                    @if ($scategory->popular == 1)
+                                    @else
                                         <li class="mega-menu-col col-lg-6">
                                             <ul>
-                                                <li><span class="submenu-title">Bottoms</span></li>
+                                                <li><span class="submenu-title">Váy</span></li>
                                                 <li><a class="dropdown-item nav-link nav_item" href="#">{{ $scategory->name }}</a></li>
                                             </ul>
                                         </li>
@@ -42,7 +43,7 @@
                             <div class="header-banner2">
                                 <img src="{{ asset('assets/imgs/banner/menu-banner-2.jpg')}}" alt="menu_banner1">
                                 <div class="banne_info">
-                                    <h6>10% Off</h6>
+                                    <h6>Giảm 10%</h6>
                                     <h4>Hàng mới về</h4>
                                     <a href="/shop">Mua ngay</a>
                                 </div>
@@ -50,7 +51,7 @@
                             <div class="header-banner2">
                                 <img src="{{ asset('assets/imgs/banner/menu-banner-3.jpg')}}" alt="menu_banner2">
                                 <div class="banne_info">
-                                    <h6>15% Off</h6>
+                                    <h6>Giảm 15%</h6>
                                     <h4>Ưu đãi lớn</h4>
                                     <a href="/shop">Mua ngay</a>
                                 </div>

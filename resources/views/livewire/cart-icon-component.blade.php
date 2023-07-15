@@ -21,9 +21,9 @@
                             <h4><span>{{ $item->qty }} × </span>${{ number_format($item->model->regular_price) }}</h4>
                             @endif
                         </div>
-                        <div class="shopping-cart-delete">
+                        {{-- <div class="shopping-cart-delete">
                             <a href="#" wire:click.prevent="destroyitem('{{ $item->rowId }}')"><i class="fi-rs-cross-small"></i></a>
-                        </div>
+                        </div> --}}
                     </li>
                     @endforeach
                 </ul>

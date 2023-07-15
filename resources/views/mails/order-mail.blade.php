@@ -27,17 +27,17 @@
                     <td><img src="{{ asset('assets/imgs/products') }}/{{ $item->product->image }}" width="100" alt=""></td> 
                     <td>{{ $item->product->name }}</td>
                     <td>{{ $item->quantity }}</td>
-                    <td>${{ $item->price * $item->quantity }}</td>
+                    <td>{{ number_format($item->price * $item->quantity) }} VNĐ</td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="3" style="border-top: 1px solid #ccc"></td>
-                <td style="font-size:15px;font-weight:bold;border-top: 1px solid #ccc">Tổng phụ: ${{ $order->subtotal }}</td>
+                <td style="font-size:15px;font-weight:bold;border-top: 1px solid #ccc">Tổng phụ: {{ number_format($order->subtotal) }} VNĐ</td>
             </tr>
 
             <tr>
                 <td colspan="3"></td>
-                <td style="font-size:15px;font-weight:bold">Thuế: ${{ $order->tax }}</td>
+                <td style="font-size:15px;font-weight:bold">Thuế: {{ number_format($order->tax) }} VNĐ</td>
             </tr>
 
             <tr>
@@ -47,7 +47,7 @@
 
             <tr>
                 <td colspan="3"></td>
-                <td style="font-size:15px;font-weight:bold">Tổng tiền: ${{ $order->total }}</td>
+                <td style="font-size:15px;font-weight:bold">Tổng tiền: {{ number_format($order->total) }} VNĐ</td>
             </tr>
         </tbody>
     </table>

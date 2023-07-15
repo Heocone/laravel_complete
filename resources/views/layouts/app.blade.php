@@ -16,6 +16,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/imgs/theme/LOGO-TL.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+
     @livewireStyles
 </head>
 
@@ -64,7 +65,7 @@
                         <div class="header-info header-info-right">
                             @auth
                                 <ul>
-                                    <li><i class="fi-rs-user"></i>{{ Auth::user()->name }}  / 
+                                    <li><i class="fi-rs-user"></i><a href="{{ route('user.dashboard') }}">{{ Auth::user()->name }}</a>  / 
                                         {{-- <form method="POST" action="{{ route('logout') }}">
                                             @csrf
                                             <a href="{{ route('logout') }}" onclick="envent.preventDefault(); this.closest('form').submit();">Log out</a>
@@ -180,7 +181,7 @@
                                         </ul>
                                     </li> --}}
                                     <li><a class="{{ Request::is('About-us') ? 'active' : '' }}" href="{{ route('AboutUs') }}">Về chúng tôi </a></li>
-                                    <li><a class="{{ Request::is('Blog-us') ? 'active' : '' }}" href="{{ route('Blog') }}">Blog </a></li>                                    
+                                    {{-- <li><a class="{{ Request::is('Blog-us') ? 'active' : '' }}" href="{{ route('Blog') }}">Blog </a></li>                                     --}}
                                     <li><a class="{{ Request::is('contact-us') ? 'active' : '' }}" href="{{ route('contactus') }}">Kết nối</a></li>
                                     <li><a href="#">Tài khoản<i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
@@ -224,7 +225,7 @@
                         </div>
                     </div>
                     <div class="hotline d-none d-lg-block">
-                        <p><i class="fi-rs-smartphone"></i><span>Miễn phí</span> (+84) 5555-555-555 </p>
+                        {{-- <p><i class="fi-rs-smartphone"></i><span>Miễn phí</span> (+84) 5555-555-555 </p> --}}
                     </div>
                     <p class="mobile-promotion">Mừng <span class="text-brand">Ngày của Mẹ</span>. Giảm Giá Lớn Lên Đến 40%</p>
                     <div class="header-action-right d-block d-lg-none">
@@ -326,9 +327,9 @@
                     <nav>
                         <ul class="mobile-menu">
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="/">Trang chủ</a></li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="{{ route('shop.index') }}">shop</a></li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="{{ route('shop.index') }}">Mua sắm</a></li>
                             @livewire('menu-mobile-component')
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="{{ route('Blog') }}">Blog</a></li>
+                            {{-- <li class="menu-item-has-children"><span class="menu-expand"></span><a href="{{ route('Blog') }}">Blog</a></li> --}}
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="{{ route('AboutUs') }}">Về chúng tôi</a></li>
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="{{ route('contactus') }}">Kết nối</a></li>
                             @auth
@@ -387,121 +388,10 @@
             </div>
         </div>
     </div>        
-
+   
     {{ $slot }}
-
-    <footer class="main">
-        <section class="newsletter p-30 text-white wow fadeIn animated">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-7 mb-md-3 mb-lg-0">
-                        <div class="row align-items-center">
-                            <div class="col flex-horizontal-center">
-                                <img class="icon-email" src="{{ asset('assets/imgs/theme/icons/icon-email.svg') }}" alt="">
-                                <h4 class="font-size-20 mb-0 ml-3">Nhận các chương trình khuyến mãi mới nhất từ chúng tôi</h4>
-                            </div>
-                            <div class="col my-4 my-md-0 des">
-                                <h5 class="font-size-15 ml-4 mb-0">...và nhận <strong>phiếu giảm giá $25 cho lần mua sắm đầu tiên.</strong></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <!-- Subscribe Form -->
-                        <form class="form-subcriber d-flex wow fadeIn animated">
-                            <input type="email" class="form-control bg-white font-small" placeholder="Nhập email của bạn">
-                            <button class="btn bg-dark text-white" type="submit">Gửi</button>
-                        </form>
-                        <!-- End Subscribe Form -->
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section-padding footer-mid">
-            <div class="container pt-15 pb-20">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="widget-about font-md mb-md-5 mb-lg-0">
-                            <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="/"><img src="{{ asset('assets/imgs/theme/LOGO-TL.png')}}" alt="logo"></a>
-                            </div>
-                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
-                            <p class="wow fadeIn animated">
-                                <strong>Địa chỉ: </strong>999 phố Washington
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Điện thoại: </strong>+84 999 999 999
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Email: </strong>contact@SUPERIDOL.com
-                            </p>
-                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
-                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-                                <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-facebook.svg') }}" alt=""></a>
-                                <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-twitter.svg') }}" alt=""></a>
-                                <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-instagram.svg') }}" alt=""></a>
-                                <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-pinterest.svg') }}" alt=""></a>
-                                <a href="#"><img src="{{ asset('assets/imgs/theme/icons/icon-youtube.svg') }}" alt=""></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">Tìm hiểu</h5>
-                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                            <li><a href="/About-us">Về chúng tôi</a></li>
-                            <li><a href="#">Thông tin giao hàng</a></li>
-                            <li><a href="#">Chính sách bảo mật</a></li>
-                            <li><a href="#">Điều khoản &amp; điều kiện</a></li>
-                            <li><a href="/contact-us">Kết nối với chúng tôi</a></li>                            
-                        </ul>
-                    </div>
-                    <div class="col-lg-2  col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">Tài khoản</h5>
-                        <ul class="footer-list wow fadeIn animated">
-                            <li><a href="/user/dashboard">Tài khoản</a></li>
-                            <li><a href="/cart">View Cart</a></li>
-                            <li><a href="/wishlist">Sản phẩm yêu thích</a></li>
-                            <li><a href="/user/dashboard">Theo dõi đơn hàng của tôi</a></li>                            
-                            <li><a href="/user/order">Đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 mob-center">
-                        <h5 class="widget-title wow fadeIn animated">Phương thức thanh toán</h5>
-                        <div class="row">
-                            {{-- <div class="col-md-8 col-lg-12">
-                                <p class="wow fadeIn animated">From App Store or Google Play</p>
-                                <div class="download-app wow fadeIn animated mob-app">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="{{ asset('assets/imgs/theme/app-store.jpg')}}" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="{{ asset('assets/imgs/theme/google-play.jpg')}}" alt=""></a>
-                                </div>
-                            </div> --}}
-                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
-                                <p class="mb-20 wow fadeIn animated">Hỗ trợ cổng thanh toán an toàn</p>
-                                <img class="wow fadeIn animated" src="{{ asset('assets/imgs/theme/payment-method.png')}}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <div class="container pb-20 wow fadeIn animated mob-center">
-            <div class="row">
-                <div class="col-12 mb-20">
-                    <div class="footer-bottom"></div>
-                </div>
-                <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">
-                        <a href="privacy-policy.html">Chính sách bảo mật</a> | <a href="terms-conditions.html">Điều khoản & điều kiện</a>
-                    </p>
-                </div>
-                <div class="col-lg-6">
-                    <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        &copy; <strong class="text-brand">SUPERIDOL</strong> Đã lấy
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>    
-    <!-- Vendor JS-->
+    @livewire('footer-component')
+ 
     <script src="{{  asset('assets/js/vendor/modernizr-3.6.0.min.js')}}"></script>
     <script src="{{  asset('assets/js/vendor/animsition.min.js')}}"></script>
     <script src="{{  asset('assets/js/vendor/modernizr-3.6.0.min.js')}}"></script>
@@ -526,10 +416,13 @@
     <script src="{{  asset('assets/js/plugins/jquery.elevatezoom.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('assets/js/vendor/sweetalert/sweetalert.min.js') }}"></script>
-
+    <script src="https://cdn.tiny.cloud/1/j815aj16f14euinljotmuq9tiygstur37g3vvwbzaxxf6odu/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <!-- Template JS -->
     <script src="{{  asset('assets/js/main.js?v=3.3')}}"></script>
     <script src="{{  asset('assets/js/shop.js?v=3.3')}}"></script>
+
+    
+
     @livewireScripts
     @stack('scripts')
     </body>

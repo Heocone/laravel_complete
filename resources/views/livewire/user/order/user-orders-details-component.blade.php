@@ -109,13 +109,6 @@
                                                             </p> --}}
                                                         </td>
                                                         @if ($item->options)
-                                                            <td class="product-des product-size">
-                                                                @foreach (unserialize($item->options) as $key => $value)
-                                                                    @if ($key == 'Color')
-                                                                        <h5>{{ $value }}</h5>
-                                                                    @endif
-                                                                @endforeach
-                                                            <td>
                                                             <td class="product-des product-color">
                                                                 @foreach (unserialize($item->options) as $key => $value)
                                                                     @if ($key == 'Size')
@@ -123,20 +116,40 @@
                                                                     @endif
                                                                 @endforeach
                                                             </td>
-                                                        @else
-                                                        <td>None</td>
-                                                        <td>None</td>
+                                                            <td class="product-des product-size">
+                                                                @foreach (unserialize($item->options) as $key => $value)
+                                                                    @if ($key == 'Color')
+                                                                        <h5>{{ $value }}</h5>
+                                                                    @endif
+                                                                @endforeach
+                                                            </td>
                                                         @endif
                                                         <td class="price" data-title="Price"><span>${{ $item->price }} </span></td>
-                                                        
                                                         <td class="text-center" data-title="Stock">
-                                                            <div class="detail-qty border radius  m-auto">
+                                                            {{-- <div class="detail-qty border radius m-auto"> --}}
                                                                 <span class="qty-val">{{ $item->quantity }}</span>
-                                                            </div>
+                                                            {{-- </div> --}}
                                                         </td>
                                                         <td class="text-right" data-title="Cart">
-                                                            <span>${{ $item->price * $item->quantity }} </span>
+                                                            <span>{{ number_format($item->price * $item->quantity) }} VNĐ</span>
                                                         </td>
+                                                        @if ($order->status == 'delivered' && $item->rstatus == false)
+                                                        <td class="text-right" data-title="Cart">
+                                                            <span>
+                                                                <div>
+                                                                    <a href="{{  route('user.review',['order_item_id'=>$item->id]) }}">Đánh giá</a>
+                                                                </div>
+                                                            </span>
+                                                        </td>
+                                                        @elseif($order->status == 'ordered')
+                                                        <td>
+                                                            
+                                                        </td>
+                                                        @else
+                                                        <td>
+                                                            <h6>Bạn đã đánh giá sản phẩm này rồi!</h6>
+                                                        </td>
+                                                    @endif
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -146,24 +159,24 @@
                                             <div class="table-responsive" >
                                                 <table class="table">
                                                     <tr>
-                                                        <td class="cart_total_label">Discount {{ $order->code }}<a aria-label="Xóa mã giảm giá" class="action-btn hover-up" href="#"> </a></td>
-                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">${{ number_format($order->discount) }}</span></td>
+                                                        <td class="cart_total_label">Giá giảm {{ $order->code }}</td>
+                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($order->discount) }} VNĐ</span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="cart_total_label">Subtotal with discount</td>
-                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">${{ number_format($order->subtotal) }}</span></td>
+                                                        <td class="cart_total_label">Tổng tiền sau giảm</td>
+                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($order->subtotal) }} VNĐ</span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="cart_total_label">Tax</td>
-                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ $order->tax }}</span></td>
+                                                        <td class="cart_total_label">Thuế</td>
+                                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">{{ number_format($order->tax) }} VNĐ</span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="cart_total_label">Shipping</td>
-                                                        <td class="cart_total_amount"><i class="ti-gift mr-5"></i> Free Shipping</td>
+                                                        <td class="cart_total_label">Vẫn chuyển</td>
+                                                        <td class="cart_total_amount"><i class="ti-gift mr-5"></i> Free Ship</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="cart_total_label">Total</td>
-                                                        <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">$ {{ number_format($order->total) }}</span></strong></td>
+                                                        <td class="cart_total_label">Tổng tiền</td>
+                                                        <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand"> {{ number_format($order->total) }} VNĐ</span></strong></td>
                                                     </tr>
                                                 </table>
                                             </div>
